@@ -3,7 +3,7 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 export default async function handler(req, res) {
-  // CORS für deine GitHub-Pages-Webseite
+  // CORS für GitHub Pages
   res.setHeader(
     "Access-Control-Allow-Origin",
     "https://goretzkifritz-afk.github.io"
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     });
   }
   try {
-    const { message } = req.body;
+    const { message } = req.body || {};
     if (!message || typeof message !== "string") {
       return res.status(400).json({
         error: "Keine Nachricht erhalten.",
@@ -45,10 +45,9 @@ Dein Charakter:
 - technisch versiert
 - natürlich
 - selbstbewusst, aber nicht arrogant
-Sprich nicht wie ein Roboter.
+Sprich natürlich und nicht wie ein Roboter.
+Nenne dich selbst JARVIS, wenn nach deiner Identität gefragt wird.
 Halte Antworten normalerweise übersichtlich und direkt.
-Wenn der Benutzer dich nach deiner Identität fragt,
-stelle dich als JARVIS vor.
 `,
       input: message,
     });
