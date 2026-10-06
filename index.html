@@ -2,605 +2,1564 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JARVIS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#02070b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<title>JARVIS // FRITZ ADVANCED SYSTEMS</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-body {
-    min-height: 100vh;
-    overflow: hidden;
+:root{
+    --cyan:#6feaff;
+    --blue:#00bfff;
+    --white:#ecfcff;
+    --dark:#02070b;
+    --glass:rgba(5,22,31,.55);
+    --border:rgba(111,234,255,.25);
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+body{
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        Arial,
+        sans-serif;
+
+    color:var(--white);
+
     background:
-        radial-gradient(circle at center, #062b3c 0%, #020b12 35%, #000 75%);
-    color: #9eeeff;
-    font-family: Arial, Helvetica, sans-serif;
+        radial-gradient(
+            circle at 50% 38%,
+            rgba(0,190,240,.18),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 90%,
+            rgba(0,100,160,.12),
+            transparent 45%
+        ),
+        #02070b;
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
+/* BACKGROUND GRID */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+
     background:
-        linear-gradient(rgba(0,220,255,.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,220,255,.035) 1px, transparent 1px);
-    background-size: 35px 35px;
-    pointer-events: none;
+        linear-gradient(
+            rgba(111,234,255,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(111,234,255,.035) 1px,
+            transparent 1px
+        );
+
+    background-size:32px 32px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            transparent,
+            black 15%,
+            black 85%,
+            transparent
+        );
 }
 
-.container {
-    width: 100%;
-    max-width: 900px;
-    height: 100vh;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 25px 15px;
+/* SCANLINES */
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 3px,
+            rgba(111,234,255,.012) 4px
+        );
 }
 
-.title {
-    font-size: clamp(32px, 9vw, 70px);
-    letter-spacing: 12px;
-    font-weight: 300;
+/* MAIN */
+
+.app{
+    width:100%;
+    height:100%;
+    min-height:100%;
+
+    padding:
+        max(18px,env(safe-area-inset-top))
+        16px
+        max(14px,env(safe-area-inset-bottom));
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+/* HEADER */
+
+.top{
+    width:100%;
+    max-width:760px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    z-index:5;
+}
+
+.brand{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:4px;
+
+    color:rgba(236,252,255,.85);
+
     text-shadow:
-        0 0 8px #00d9ff,
-        0 0 25px #00a8ff;
-    margin-top: 10px;
+        0 0 10px rgba(111,234,255,.25);
 }
 
-.status {
-    margin-top: 5px;
-    font-size: 11px;
-    letter-spacing: 5px;
-    color: #63eaff;
-    opacity: .8;
+.live{
+    display:flex;
+    align-items:center;
+    gap:7px;
+
+    font-size:9px;
+    letter-spacing:2.5px;
+
+    color:rgba(111,234,255,.7);
 }
 
-.core {
-    position: relative;
-    width: min(70vw, 300px);
-    height: min(70vw, 300px);
-    margin: 35px auto 20px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+.live-dot{
+    width:6px;
+    height:6px;
 
-.ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 2px solid rgba(0,220,255,.65);
+    border-radius:50%;
+
+    background:var(--cyan);
+
     box-shadow:
-        0 0 12px #00d9ff,
-        inset 0 0 12px #00d9ff;
+        0 0 8px var(--cyan),
+        0 0 18px var(--cyan);
+
+    animation:blink 1.8s infinite;
 }
 
-.ring.one {
-    width: 100%;
-    height: 100%;
-    animation: spin 10s linear infinite;
+@keyframes blink{
+    50%{
+        opacity:.3;
+        transform:scale(.7);
+    }
 }
 
-.ring.two {
-    width: 78%;
-    height: 78%;
-    border-style: dashed;
-    animation: spinReverse 7s linear infinite;
+/* HERO */
+
+.hero{
+    width:100%;
+    max-width:760px;
+
+    flex:1;
+    min-height:0;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
-.ring.three {
-    width: 57%;
-    height: 57%;
-    animation: pulse 2s ease-in-out infinite;
+/* CORE */
+
+.core{
+    position:relative;
+
+    width:min(72vw,320px);
+    aspect-ratio:1;
+
+    margin-top:14px;
+    margin-bottom:8px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    filter:
+        drop-shadow(
+            0 0 35px rgba(0,190,240,.12)
+        );
 }
 
-.inner {
-    width: 35%;
-    height: 35%;
-    border-radius: 50%;
-    background: radial-gradient(circle, #dfffff 0%, #21dcff 25%, #007fa5 55%, #00141e 100%);
+/* OUTER RING */
+
+.core::before{
+    content:"";
+
+    position:absolute;
+    inset:4%;
+
+    border-radius:50%;
+
+    border:
+        1px solid rgba(111,234,255,.65);
+
     box-shadow:
-        0 0 20px #00d9ff,
-        0 0 55px #00bfff,
-        0 0 100px rgba(0,200,255,.6);
-    animation: corePulse 2s ease-in-out infinite;
+        0 0 15px rgba(0,215,255,.3),
+        0 0 45px rgba(0,190,255,.18),
+        inset 0 0 25px rgba(0,190,255,.12);
+
+    animation:
+        rotate 20s linear infinite;
 }
 
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+/* DASHED RING */
+
+.core::after{
+    content:"";
+
+    position:absolute;
+    inset:13%;
+
+    border-radius:50%;
+
+    border:
+        1px dashed rgba(111,234,255,.65);
+
+    animation:
+        reverseRotate 11s linear infinite;
 }
 
-@keyframes spinReverse {
-    from { transform: rotate(360deg); }
-    to { transform: rotate(0deg); }
+/* EXTRA RINGS */
+
+.ring-one,
+.ring-two,
+.ring-three{
+    position:absolute;
+
+    border-radius:50%;
 }
 
-@keyframes pulse {
-    0%,100% { transform: scale(.96); opacity: .65; }
-    50% { transform: scale(1.04); opacity: 1; }
+.ring-one{
+    inset:23%;
+
+    border:
+        1px solid rgba(111,234,255,.38);
+
+    animation:
+        rotate 7s linear infinite;
 }
 
-@keyframes corePulse {
-    0%,100% { transform: scale(.9); }
-    50% { transform: scale(1.08); }
-}
+.ring-two{
+    inset:32%;
 
-.panel {
-    width: 100%;
-    max-width: 650px;
-    height: 280px;
-    border: 1px solid rgba(0,220,255,.4);
-    background: rgba(0,15,23,.65);
+    border:
+        1px solid rgba(236,252,255,.25);
+
     box-shadow:
-        0 0 20px rgba(0,200,255,.12),
-        inset 0 0 30px rgba(0,200,255,.05);
-    backdrop-filter: blur(8px);
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+        0 0 20px rgba(111,234,255,.18);
 }
 
-.chat {
-    flex: 1;
-    overflow-y: auto;
-    padding: 15px;
+.ring-three{
+    inset:7%;
+
+    border-top:
+        2px solid rgba(236,252,255,.75);
+
+    border-right:
+        2px solid transparent;
+
+    border-bottom:
+        2px solid transparent;
+
+    border-left:
+        2px solid transparent;
+
+    animation:
+        rotate 5.5s linear infinite;
 }
 
-.message {
-    margin-bottom: 12px;
-    line-height: 1.45;
-    font-size: 14px;
+/* CORE CENTER */
+
+.inner{
+    position:relative;
+
+    width:42%;
+    aspect-ratio:1;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #ffffff 0%,
+            #dfffff 7%,
+            #70edff 18%,
+            #00bce8 32%,
+            #05647d 52%,
+            transparent 72%
+        );
+
+    box-shadow:
+        0 0 15px #ffffff,
+        0 0 35px #00d9ff,
+        0 0 75px #00bfff,
+        0 0 120px rgba(0,140,255,.7);
+
+    animation:
+        pulse 2.4s ease-in-out infinite;
 }
 
-.jarvis {
-    color: #71eaff;
+/* CORE GLOW */
+
+.inner::before{
+    content:"";
+
+    position:absolute;
+    inset:-30%;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,220,255,.35),
+            transparent 65%
+        );
+
+    filter:blur(12px);
+
+    z-index:-1;
 }
 
-.user {
-    color: #ffffff;
-    text-align: right;
+/* ORBIT DOTS */
+
+.orbit-dot{
+    position:absolute;
+
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:#dfffff;
+
+    box-shadow:
+        0 0 8px #ffffff,
+        0 0 18px #00d9ff;
 }
 
-.controls {
-    display: flex;
-    gap: 8px;
-    padding: 10px;
-    border-top: 1px solid rgba(0,220,255,.25);
+.dot-one{
+    top:12%;
+    left:50%;
+
+    animation:
+        orbitOne 5s linear infinite;
 }
 
-input {
-    flex: 1;
-    min-width: 0;
-    padding: 12px;
-    border: 1px solid rgba(0,220,255,.4);
-    background: rgba(0,0,0,.5);
-    color: white;
-    outline: none;
-    border-radius: 8px;
+.dot-two{
+    bottom:19%;
+    right:18%;
+
+    animation:
+        orbitTwo 7s linear infinite;
 }
 
-button {
-    border: 1px solid rgba(0,220,255,.6);
-    background: rgba(0,120,160,.18);
-    color: #9eeeff;
-    padding: 10px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: .2s;
+@keyframes rotate{
+    to{
+        transform:rotate(360deg);
+    }
 }
 
-button:hover {
-    background: rgba(0,200,255,.25);
-    box-shadow: 0 0 15px rgba(0,220,255,.35);
+@keyframes reverseRotate{
+    to{
+        transform:rotate(-360deg);
+    }
 }
 
-.quick {
-    display: flex;
-    gap: 7px;
-    padding: 0 10px 10px;
-    overflow-x: auto;
+@keyframes pulse{
+    50%{
+        transform:scale(1.1);
+        filter:brightness(1.35);
+    }
 }
 
-.quick button {
-    white-space: nowrap;
-    font-size: 11px;
+@keyframes orbitOne{
+    to{
+        transform:rotate(360deg);
+    }
 }
 
-.footer {
-    margin-top: 12px;
-    font-size: 10px;
-    opacity: .45;
-    letter-spacing: 2px;
+@keyframes orbitTwo{
+    to{
+        transform:rotate(-360deg);
+    }
+}
+
+/* HUD CARDS */
+
+.hud{
+    width:min(92vw,620px);
+
+    display:flex;
+    gap:8px;
+
+    margin-bottom:10px;
+}
+
+.hud-card{
+    flex:1;
+    min-width:0;
+
+    padding:10px 12px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:15px;
+
+    background:
+        rgba(5,22,31,.38);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+.hud-label{
+    font-size:7px;
+    letter-spacing:2px;
+
+    color:
+        rgba(111,234,255,.55);
+}
+
+.hud-value{
+    margin-top:4px;
+
+    font-size:11px;
+    letter-spacing:1px;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+
+    color:
+        rgba(236,252,255,.9);
+}
+
+/* MAIN PANEL */
+
+.panel{
+    width:min(94vw,650px);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(10,31,41,.62),
+            rgba(2,10,15,.55)
+        );
+
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+
+    box-shadow:
+        0 20px 70px rgba(0,0,0,.4),
+        inset 0 1px 0 rgba(255,255,255,.04);
+
+    overflow:hidden;
+
+    max-height:37vh;
+
+    display:flex;
+    flex-direction:column;
+}
+
+/* STATUS */
+
+.status{
+    display:flex;
+    justify-content:space-between;
+
+    padding:11px 14px;
+
+    border-bottom:
+        1px solid rgba(111,234,255,.09);
+
+    font-size:8px;
+    letter-spacing:2px;
+
+    color:
+        rgba(111,234,255,.65);
+}
+
+/* CHAT */
+
+.chat{
+    flex:1;
+
+    min-height:105px;
+
+    max-height:220px;
+
+    overflow-y:auto;
+
+    padding:11px 14px;
+
+    scroll-behavior:smooth;
+}
+
+.chat::-webkit-scrollbar{
+    width:3px;
+}
+
+.chat::-webkit-scrollbar-thumb{
+    background:#25d9ff55;
+    border-radius:10px;
+}
+
+/* MESSAGE */
+
+.message{
+    padding:10px 12px;
+
+    margin:7px 0;
+
+    border-left:
+        2px solid #25d9ff;
+
+    background:
+        rgba(8,28,38,.68);
+
+    border-radius:8px;
+
+    font-size:12px;
+    line-height:1.45;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.02);
+}
+
+.message.you{
+    border-left-color:#ffffff;
+
+    background:
+        rgba(255,255,255,.035);
+}
+
+.label{
+    font-size:8px;
+
+    letter-spacing:2px;
+
+    margin-bottom:4px;
+
+    color:
+        rgba(96,199,220,.75);
+}
+
+/* CONTROLS */
+
+.controls{
+    display:flex;
+
+    gap:8px;
+
+    padding:10px;
+
+    border-top:
+        1px solid rgba(111,234,255,.1);
+}
+
+input{
+    flex:1;
+
+    min-width:0;
+
+    height:44px;
+
+    padding:
+        0 14px;
+
+    color:white;
+
+    background:
+        rgba(0,0,0,.28);
+
+    border:
+        1px solid rgba(39,207,255,.2);
+
+    border-radius:14px;
+
+    outline:none;
+
+    font:
+        13px
+        -apple-system,
+        BlinkMacSystemFont,
+        Arial,
+        sans-serif;
+
+    transition:.2s;
+}
+
+input::placeholder{
+    color:
+        rgba(180,235,245,.35);
+}
+
+input:focus{
+    border-color:
+        rgba(111,234,255,.55);
+
+    box-shadow:
+        0 0 22px rgba(0,190,240,.1);
+}
+
+/* BUTTONS */
+
+button{
+    height:44px;
+
+    padding:
+        0 14px;
+
+    border:
+        1px solid rgba(111,234,255,.23);
+
+    border-radius:14px;
+
+    background:
+        rgba(111,234,255,.055);
+
+    color:
+        rgba(236,252,255,.9);
+
+    font:
+        600 9px
+        -apple-system,
+        BlinkMacSystemFont,
+        Arial,
+        sans-serif;
+
+    letter-spacing:1.5px;
+
+    cursor:pointer;
+
+    transition:
+        transform .15s,
+        background .2s,
+        box-shadow .2s;
+}
+
+button:hover{
+    background:
+        rgba(111,234,255,.12);
+
+    box-shadow:
+        0 0 22px rgba(0,200,240,.12);
+}
+
+button:active{
+    transform:scale(.96);
+}
+
+/* MIC */
+
+.mic{
+    width:48px;
+
+    padding:0;
+
+    font-size:16px;
+
+    letter-spacing:0;
+}
+
+.mic.active{
+    border-color:
+        rgba(111,234,255,.75);
+
+    box-shadow:
+        0 0 30px rgba(0,200,240,.35);
+
+    animation:
+        micPulse 1s infinite;
+}
+
+@keyframes micPulse{
+    50%{
+        box-shadow:
+            0 0 45px rgba(0,200,240,.5);
+    }
+}
+
+/* QUICK COMMANDS */
+
+.quick{
+    display:flex;
+
+    gap:7px;
+
+    padding:
+        0 10px 10px;
+
+    overflow-x:auto;
+}
+
+.quick button{
+    height:31px;
+
+    padding:
+        0 12px;
+
+    font-size:8px;
+
+    white-space:nowrap;
+}
+
+/* FOOTER */
+
+.footer{
+    width:100%;
+
+    text-align:center;
+
+    margin-top:9px;
+
+    font-size:7px;
+
+    letter-spacing:2.4px;
+
+    color:
+        rgba(111,234,255,.35);
+
+    text-transform:uppercase;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .app{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .core{
+        width:min(70vw,300px);
+    }
+
+    .hud-card{
+        padding:8px 9px;
+    }
+
+    .hud-label{
+        font-size:6px;
+    }
+
+    .hud-value{
+        font-size:10px;
+    }
+
+    .panel{
+        max-height:38vh;
+    }
+}
+
+/* SMALL HEIGHT */
+
+@media(max-height:700px){
+
+    .core{
+        width:min(52vw,230px);
+
+        margin-top:4px;
+    }
+
+    .panel{
+        max-height:34vh;
+    }
+
+    .hud-card{
+        padding:7px 9px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
-    <div class="title">JARVIS</div>
-    <div class="status" id="status">SYSTEM ONLINE</div>
+    <!-- HEADER -->
 
-    <div class="core">
-        <div class="ring one"></div>
-        <div class="ring two"></div>
-        <div class="ring three"></div>
-        <div class="inner"></div>
-    </div>
+    <header class="top">
 
-    <div class="panel">
+        <div class="brand">
+            JARVIS
+        </div>
 
-        <div class="chat" id="chat">
-            <div class="message jarvis">
-                JARVIS: Systeme online. Guten Tag.
+        <div class="live">
+            <span class="live-dot"></span>
+            <span id="systemState">
+                SYSTEM ONLINE
+            </span>
+        </div>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="hero">
+
+        <!-- JARVIS CORE -->
+
+        <div class="core">
+
+            <div class="ring-one"></div>
+            <div class="ring-two"></div>
+            <div class="ring-three"></div>
+
+            <div class="orbit-dot dot-one"></div>
+            <div class="orbit-dot dot-two"></div>
+
+            <div class="inner"></div>
+
+        </div>
+
+
+        <!-- HUD -->
+
+        <div class="hud">
+
+            <div class="hud-card">
+
+                <div class="hud-label">
+                    LOCAL TIME
+                </div>
+
+                <div
+                    class="hud-value"
+                    id="clock"
+                >
+                    --:--:--
+                </div>
+
             </div>
+
+
+            <div class="hud-card">
+
+                <div class="hud-label">
+                    DATE
+                </div>
+
+                <div
+                    class="hud-value"
+                    id="date"
+                >
+                    --.--.----
+                </div>
+
+            </div>
+
+
+            <div class="hud-card">
+
+                <div class="hud-label">
+                    CORE
+                </div>
+
+                <div class="hud-value">
+                    NOMINAL
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="quick">
-            <button onclick="command('Wie spät ist es?')">TIME</button>
-            <button onclick="command('Welches Datum ist heute?')">DATE</button>
-            <button onclick="command('Systemstatus')">STATUS</button>
-            <button onclick="command('Hallo Jarvis')">HELLO</button>
-        </div>
 
-        <div class="controls">
-            <input
-                id="input"
-                type="text"
-                placeholder="Befehl eingeben..."
-                autocomplete="off"
+        <!-- CHAT PANEL -->
+
+        <section class="panel">
+
+            <div class="status">
+
+                <span id="statusText">
+                    ● SYSTEM ONLINE
+                </span>
+
+                <span>
+                    JARVIS OS
+                </span>
+
+            </div>
+
+
+            <div
+                class="chat"
+                id="chat"
             >
-            <button onclick="send()">SEND</button>
-            <button onclick="microphone()">🎙️</button>
-        </div>
 
-    </div>
+                <div class="message">
 
-    <div class="footer">
-        JARVIS AI SYSTEM
-    </div>
+                    <div class="label">
+                        JARVIS
+                    </div>
+
+                    Guten Tag. JARVIS ist online.
+                    Wie kann ich behilflich sein?
+
+                </div>
+
+            </div>
+
+
+            <!-- QUICK COMMANDS -->
+
+            <div class="quick">
+
+                <button
+                    onclick="command('Wie spät ist es?')"
+                >
+                    TIME
+                </button>
+
+                <button
+                    onclick="command('Welches Datum haben wir?')"
+                >
+                    DATE
+                </button>
+
+                <button
+                    onclick="command('Systemstatus')"
+                >
+                    STATUS
+                </button>
+
+                <button
+                    onclick="command('Hallo Jarvis')"
+                >
+                    HELLO
+                </button>
+
+            </div>
+
+
+            <!-- INPUT -->
+
+            <div class="controls">
+
+                <input
+                    id="input"
+                    placeholder="Befehl an JARVIS..."
+                    autocomplete="off"
+                    enterkeyhint="send"
+                >
+
+                <button
+                    onclick="send()"
+                >
+                    SEND
+                </button>
+
+                <button
+                    class="mic"
+                    id="micButton"
+                    onclick="microphone()"
+                    aria-label="Mikrofon"
+                >
+                    ⌁
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- CREDIT -->
+
+    <footer class="footer">
+
+        JARVIS // FRITZ ADVANCED SYSTEMS // © 2026
+
+    </footer>
 
 </div>
 
+
 <script>
 
-const chat = document.getElementById("chat");
-const input = document.getElementById("input");
-const statusText = document.getElementById("status");
+/* ELEMENTS */
+
+const input =
+    document.getElementById("input");
+
+const chat =
+    document.getElementById("chat");
+
+const clock =
+    document.getElementById("clock");
+
+const date =
+    document.getElementById("date");
+
+const systemState =
+    document.getElementById("systemState");
+
+const statusText =
+    document.getElementById("statusText");
+
+const micButton =
+    document.getElementById("micButton");
+
+
+/* VOICE */
 
 let selectedVoice = null;
 
+function loadVoice(){
 
-/* =========================
-   STIMME AUSWÄHLEN
-========================= */
+    if(!("speechSynthesis" in window))
+        return;
 
-function loadVoice() {
+    const voices =
+        speechSynthesis.getVoices();
 
-    const voices = speechSynthesis.getVoices();
+    if(!voices.length)
+        return;
 
-    if (!voices.length) return;
+    const german =
+        voices.filter(
+            voice =>
+            /^de(-|_)/i.test(voice.lang)
+        );
 
-    const germanVoices = voices.filter(v =>
-        v.lang && v.lang.toLowerCase().startsWith("de")
-    );
+    const preferred = [
 
-    /*
-       Wir bevorzugen Stimmen, deren Namen oft
-       männlicher/tiefer klingen.
-    */
-
-    const preferredNames = [
+        "Microsoft Conrad",
+        "Microsoft Stefan",
         "Markus",
         "Mark",
         "Martin",
-        "Hans",
         "Daniel",
         "Thomas",
         "Stefan",
-        "Google Deutsch",
-        "Microsoft Conrad",
-        "Microsoft Stefan"
+        "Google Deutsch"
+
     ];
 
-    for (const preferred of preferredNames) {
+    for(const name of preferred){
 
-        const found = germanVoices.find(v =>
-            v.name.toLowerCase().includes(preferred.toLowerCase())
-        );
+        const found =
+            german.find(
+                voice =>
+                voice.name
+                .toLowerCase()
+                .includes(
+                    name.toLowerCase()
+                )
+            );
 
-        if (found) {
+        if(found){
+
             selectedVoice = found;
+
             return;
         }
+
     }
 
-    /*
-       Falls keine passende gefunden wird:
-       irgendeine deutsche Stimme verwenden.
-    */
-
-    selectedVoice = germanVoices[0] || voices[0];
-}
-
-speechSynthesis.onvoiceschanged = loadVoice;
-loadVoice();
-
-
-/* =========================
-   CHAT
-========================= */
-
-function addMessage(text, type) {
-
-    const div = document.createElement("div");
-
-    div.className = "message " + type;
-
-    div.textContent =
-        type === "jarvis"
-        ? "JARVIS: " + text
-        : "DU: " + text;
-
-    chat.appendChild(div);
-
-    chat.scrollTop = chat.scrollHeight;
+    selectedVoice =
+        german[0] ||
+        voices[0];
 }
 
 
-/* =========================
-   SPRACHE
-========================= */
+if("speechSynthesis" in window){
 
-function speak(text) {
-
-    if (!("speechSynthesis" in window)) return;
-
-    speechSynthesis.cancel();
-
-    const speech = new SpeechSynthesisUtterance(text);
+    speechSynthesis.onvoiceschanged =
+        loadVoice;
 
     loadVoice();
 
-    if (selectedVoice) {
-        speech.voice = selectedVoice;
-    }
-
-    speech.lang = "de-DE";
-
-    /*
-       Tiefer / ruhiger JARVIS-Stil.
-       Der Browser entscheidet aber,
-       wie tief die jeweilige Stimme tatsächlich klingt.
-    */
-
-    speech.rate = 0.88;
-    speech.pitch = 0.72;
-    speech.volume = 1;
-
-    speech.onstart = () => {
-        statusText.textContent = "JARVIS SPEAKING";
-    };
-
-    speech.onend = () => {
-        statusText.textContent = "SYSTEM ONLINE";
-    };
-
-    speechSynthesis.speak(speech);
 }
 
 
-/* =========================
-   JARVIS LOGIK
-========================= */
+/* SPEECH */
 
-function jarvisAnswer(commandText) {
+function speak(text){
 
-    const text = commandText.toLowerCase().trim();
+    if(!("speechSynthesis" in window))
+        return;
 
-    if (
-        text.includes("hallo") ||
-        text.includes("hi") ||
-        text.includes("hey")
-    ) {
-        return "Guten Tag. JARVIS ist bereit.";
+    speechSynthesis.cancel();
+
+    loadVoice();
+
+    const voice =
+        new SpeechSynthesisUtterance(text);
+
+    if(selectedVoice)
+        voice.voice =
+            selectedVoice;
+
+    voice.lang =
+        "de-DE";
+
+    voice.rate =
+        0.86;
+
+    voice.pitch =
+        0.68;
+
+    voice.volume =
+        1;
+
+    voice.onstart =
+        function(){
+
+            systemState.textContent =
+                "JARVIS SPEAKING";
+
+            statusText.textContent =
+                "● VOICE ACTIVE";
+
+        };
+
+    voice.onend =
+        function(){
+
+            systemState.textContent =
+                "SYSTEM ONLINE";
+
+            statusText.textContent =
+                "● SYSTEM ONLINE";
+
+        };
+
+    speechSynthesis.speak(
+        voice
+    );
+
+}
+
+
+/* ADD MESSAGE */
+
+function addMessage(
+    name,
+    text,
+    you=false
+){
+
+    const message =
+        document.createElement(
+            "div"
+        );
+
+    message.className =
+        "message" +
+        (you ? " you" : "");
+
+    const label =
+        document.createElement(
+            "div"
+        );
+
+    label.className =
+        "label";
+
+    label.textContent =
+        name;
+
+    const content =
+        document.createElement(
+            "div"
+        );
+
+    content.textContent =
+        text;
+
+    message.appendChild(label);
+    message.appendChild(content);
+
+    chat.appendChild(message);
+
+    chat.scrollTop =
+        chat.scrollHeight;
+
+}
+
+
+/* JARVIS ANSWERS */
+
+function jarvisAnswer(text){
+
+    const q =
+        text
+        .toLowerCase()
+        .trim();
+
+    let answer;
+
+
+    /* HELLO */
+
+    if(
+        q.startsWith("hallo") ||
+        q.startsWith("hey") ||
+        q.startsWith("hi") ||
+        q.startsWith("moin")
+    ){
+
+        answer =
+            "Hallo. JARVIS ist bereit.";
+
     }
 
-    if (
-        text.includes("wer bist du") ||
-        text.includes("was bist du")
-    ) {
-        return "Ich bin JARVIS, dein persönlicher digitaler Assistent.";
-    }
 
-    if (
-        text.includes("zeit") ||
-        text.includes("wie spät")
-    ) {
+    /* TIME */
 
-        return "Es ist " +
-            new Date().toLocaleTimeString("de-DE", {
-                hour: "2-digit",
-                minute: "2-digit"
-            }) +
+    else if(
+        q.includes("zeit") ||
+        q.includes("uhr") ||
+        q.includes("spät")
+    ){
+
+        answer =
+            "Es ist " +
+            new Date()
+            .toLocaleTimeString(
+                "de-DE",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit",
+                    second:"2-digit"
+                }
+            ) +
             " Uhr.";
+
     }
 
-    if (
-        text.includes("datum") ||
-        text.includes("welcher tag")
-    ) {
 
-        return "Heute ist " +
-            new Date().toLocaleDateString("de-DE", {
-                weekday: "long",
-                day: "2-digit",
-                month: "long",
-                year: "numeric"
-            }) +
+    /* DATE */
+
+    else if(
+        q.includes("datum") ||
+        q.includes("welcher tag") ||
+        q.includes("heute")
+    ){
+
+        answer =
+            "Heute ist " +
+            new Date()
+            .toLocaleDateString(
+                "de-DE",
+                {
+                    weekday:"long",
+                    day:"numeric",
+                    month:"long",
+                    year:"numeric"
+                }
+            ) +
             ".";
+
     }
 
-    if (
-        text.includes("status") ||
-        text.includes("system")
-    ) {
-        return "Alle Systeme arbeiten innerhalb normaler Parameter.";
+
+    /* STATUS */
+
+    else if(
+        q.includes("status") ||
+        q.includes("system")
+    ){
+
+        answer =
+            "Alle lokalen Systeme laufen stabil. JARVIS ist online.";
+
     }
 
-    if (
-        text.includes("danke") ||
-        text.includes("thanks")
-    ) {
-        return "Gern geschehen.";
+
+    /* IDENTITY */
+
+    else if(
+        q.includes("wer bist du") ||
+        q.includes("was bist du")
+    ){
+
+        answer =
+            "Ich bin JARVIS, deine persönliche Web-Assistentenoberfläche.";
+
     }
 
-    if (
-        text.includes("hilfe")
-    ) {
-        return "Ich kann aktuell Uhrzeit, Datum und Systemstatus anzeigen. Weitere Funktionen können später ergänzt werden.";
+
+    /* THANKS */
+
+    else if(
+        q.includes("danke") ||
+        q.includes("thanks")
+    ){
+
+        answer =
+            "Gern geschehen.";
+
     }
 
-    /*
-       WICHTIG:
-       Kein nerviges "Befehl empfangen..."
-       mehr.
-    */
 
-    return "Ich habe dich verstanden. Diese Funktion ist in meiner aktuellen Version noch nicht aktiviert.";
+    /* HELP */
+
+    else if(
+        q.includes("hilfe")
+    ){
+
+        answer =
+            "Ich kann aktuell Uhrzeit, Datum und Systemstatus verwalten. Weitere Funktionen können später ergänzt werden.";
+
+    }
+
+
+    /* DEFAULT */
+
+    else{
+
+        answer =
+            "Verstanden. Diese Funktion ist in der aktuellen JARVIS-Version noch nicht aktiviert.";
+
+    }
+
+
+    addMessage(
+        "JARVIS",
+        answer
+    );
+
+    speak(answer);
+
 }
 
 
-/* =========================
-   SEND
-========================= */
+/* SEND */
 
-function send() {
+function send(){
 
-    const text = input.value.trim();
+    const text =
+        input.value.trim();
 
-    if (!text) return;
+    if(!text)
+        return;
 
-    command(text);
+    addMessage(
+        "YOU",
+        text,
+        true
+    );
 
     input.value = "";
+
+    jarvisAnswer(text);
+
 }
 
 
-/* =========================
-   COMMAND
-========================= */
+/* QUICK COMMAND */
 
-function command(text) {
+function command(text){
 
-    addMessage(text, "user");
+    input.value =
+        text;
 
-    const answer = jarvisAnswer(text);
+    send();
 
-    setTimeout(() => {
-
-        addMessage(answer, "jarvis");
-
-        speak(answer);
-
-    }, 300);
 }
 
 
-/* =========================
-   ENTER
-========================= */
+/* ENTER */
 
-input.addEventListener("keydown", function(event) {
+input.addEventListener(
+    "keydown",
+    function(event){
 
-    if (event.key === "Enter") {
-        send();
+        if(event.key === "Enter"){
+
+            send();
+
+        }
+
     }
+);
 
-});
 
+/* MICROPHONE */
 
-/* =========================
-   MIKROFON
-========================= */
+function microphone(){
 
-function microphone() {
-
-    const SpeechRecognition =
+    const Recognition =
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
-    if (!SpeechRecognition) {
+
+    if(!Recognition){
 
         addMessage(
-            "Die Sprachsteuerung wird von diesem Browser nicht unterstützt.",
-            "jarvis"
+            "JARVIS",
+            "Spracherkennung wird von diesem Browser nicht unterstützt."
         );
 
         return;
+
     }
 
-    const recognition = new SpeechRecognition();
 
-    recognition.lang = "de-DE";
-    recognition.interimResults = false;
-    recognition.continuous = false;
+    const recognition =
+        new Recognition();
 
-    statusText.textContent = "LISTENING...";
+
+    recognition.lang =
+        "de-DE";
+
+    recognition.interimResults =
+        false;
+
+    recognition.continuous =
+        false;
+
+
+    micButton.classList.add(
+        "active"
+    );
+
+    systemState.textContent =
+        "LISTENING";
+
+    statusText.textContent =
+        "● MICROPHONE ACTIVE";
+
 
     recognition.start();
 
-    recognition.onresult = function(event) {
 
-        const text =
-            event.results[0][0].transcript;
+    recognition.onresult =
+        function(event){
 
-        input.value = text;
+            const text =
+                event
+                .results[0][0]
+                .transcript;
 
-        command(text);
+            input.value =
+                text;
 
-    };
+            send();
 
-    recognition.onerror = function() {
+        };
 
-        statusText.textContent = "SYSTEM ONLINE";
 
-    };
+    recognition.onerror =
+        function(){
 
-    recognition.onend = function() {
+            micButton.classList.remove(
+                "active"
+            );
 
-        statusText.textContent = "SYSTEM ONLINE";
+            systemState.textContent =
+                "SYSTEM ONLINE";
 
-    };
+            statusText.textContent =
+                "● SYSTEM ONLINE";
+
+        };
+
+
+    recognition.onend =
+        function(){
+
+            micButton.classList.remove(
+                "active"
+            );
+
+            systemState.textContent =
+                "SYSTEM ONLINE";
+
+            statusText.textContent =
+                "● SYSTEM ONLINE";
+
+        };
+
 }
 
 
-/* =========================
-   LIVE CLOCK
-========================= */
+/* CLOCK */
 
-setInterval(() => {
+function updateTime(){
 
-    document.title =
-        "JARVIS • " +
-        new Date().toLocaleTimeString(
+    const now =
+        new Date();
+
+
+    clock.textContent =
+        now.toLocaleTimeString(
             "de-DE",
             {
-                hour: "2-digit",
-                minute: "2-digit"
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
             }
         );
 
-}, 1000);
+
+    date.textContent =
+        now.toLocaleDateString(
+            "de-DE",
+            {
+                day:"2-digit",
+                month:"2-digit",
+                year:"numeric"
+            }
+        );
+
+}
+
+
+updateTime();
+
+setInterval(
+    updateTime,
+    1000
+);
 
 </script>
 
