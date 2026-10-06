@@ -6,201 +6,219 @@
 <title>JARVIS</title>
 
 <style>
-*{box-sizing:border-box}
-
-body{
-margin:0;
-min-height:100vh;
-font-family:Arial,sans-serif;
-color:#dffaff;
-background:radial-gradient(circle,#073b50 0%,#04121b 40%,#010408 100%);
-overflow:hidden;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-body:before{
-content:"";
-position:fixed;
-inset:0;
-background:
-linear-gradient(#19cfff12 1px,transparent 1px),
-linear-gradient(90deg,#19cfff12 1px,transparent 1px);
-background-size:40px 40px;
-pointer-events:none;
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at center, #062b3c 0%, #020b12 35%, #000 75%);
+    color: #9eeeff;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.container{
-min-height:100vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-padding:30px 15px;
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(rgba(0,220,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,220,255,.035) 1px, transparent 1px);
+    background-size: 35px 35px;
+    pointer-events: none;
 }
 
-.title{
-font-size:clamp(40px,9vw,75px);
-letter-spacing:12px;
-margin:0;
-text-shadow:0 0 15px #19dfff,0 0 40px #00bfff;
+.container {
+    width: 100%;
+    max-width: 900px;
+    height: 100vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 15px;
 }
 
-.subtitle{
-color:#65aabb;
-font-size:11px;
-letter-spacing:5px;
-margin:8px 0 25px;
+.title {
+    font-size: clamp(32px, 9vw, 70px);
+    letter-spacing: 12px;
+    font-weight: 300;
+    text-shadow:
+        0 0 8px #00d9ff,
+        0 0 25px #00a8ff;
+    margin-top: 10px;
 }
 
-.core{
-width:min(320px,70vw);
-aspect-ratio:1;
-position:relative;
-display:flex;
-align-items:center;
-justify-content:center;
-margin-bottom:25px;
+.status {
+    margin-top: 5px;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: #63eaff;
+    opacity: .8;
 }
 
-.core:before{
-content:"";
-position:absolute;
-inset:4%;
-border-radius:50%;
-border:2px solid #27dfff;
-box-shadow:0 0 20px #00d9ff,0 0 60px #00bfff66,inset 0 0 35px #00bfff44;
+.core {
+    position: relative;
+    width: min(70vw, 300px);
+    height: min(70vw, 300px);
+    margin: 35px auto 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.core:after{
-content:"";
-position:absolute;
-inset:13%;
-border-radius:50%;
-border:1px dashed #72eaff;
-animation:spin 8s linear infinite;
+.ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(0,220,255,.65);
+    box-shadow:
+        0 0 12px #00d9ff,
+        inset 0 0 12px #00d9ff;
 }
 
-.inner{
-width:42%;
-aspect-ratio:1;
-border-radius:50%;
-background:radial-gradient(circle,white 0%,#8af4ff 8%,#19cfff 25%,#05607a 50%,transparent 72%);
-box-shadow:0 0 20px white,0 0 60px #00d9ff,0 0 110px #008cff;
-animation:pulse 2s infinite;
+.ring.one {
+    width: 100%;
+    height: 100%;
+    animation: spin 10s linear infinite;
 }
 
-.ring{
-position:absolute;
-inset:25%;
-border-radius:50%;
-border:1px solid #8cefff;
-animation:spin 4s linear infinite reverse;
+.ring.two {
+    width: 78%;
+    height: 78%;
+    border-style: dashed;
+    animation: spinReverse 7s linear infinite;
 }
 
-@keyframes spin{
-to{transform:rotate(360deg)}
+.ring.three {
+    width: 57%;
+    height: 57%;
+    animation: pulse 2s ease-in-out infinite;
 }
 
-@keyframes pulse{
-50%{
-transform:scale(1.1);
-filter:brightness(1.4);
-}
-}
-
-.panel{
-width:min(900px,100%);
-background:#06141dcc;
-border:1px solid #25d9ff55;
-border-radius:18px;
-padding:16px;
-box-shadow:0 0 40px #00cfff18;
-backdrop-filter:blur(12px);
+.inner {
+    width: 35%;
+    height: 35%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #dfffff 0%, #21dcff 25%, #007fa5 55%, #00141e 100%);
+    box-shadow:
+        0 0 20px #00d9ff,
+        0 0 55px #00bfff,
+        0 0 100px rgba(0,200,255,.6);
+    animation: corePulse 2s ease-in-out infinite;
 }
 
-.status{
-display:flex;
-justify-content:space-between;
-font-size:11px;
-color:#64c9db;
-margin-bottom:10px;
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-.chat{
-height:230px;
-overflow-y:auto;
-padding:5px;
+@keyframes spinReverse {
+    from { transform: rotate(360deg); }
+    to { transform: rotate(0deg); }
 }
 
-.message{
-padding:10px;
-margin:7px 0;
-border-left:2px solid #25d9ff;
-background:#091d27;
-border-radius:7px;
+@keyframes pulse {
+    0%,100% { transform: scale(.96); opacity: .65; }
+    50% { transform: scale(1.04); opacity: 1; }
 }
 
-.you{
-border-left-color:white;
+@keyframes corePulse {
+    0%,100% { transform: scale(.9); }
+    50% { transform: scale(1.08); }
 }
 
-.label{
-font-size:9px;
-letter-spacing:2px;
-color:#60c7dc;
-margin-bottom:4px;
+.panel {
+    width: 100%;
+    max-width: 650px;
+    height: 280px;
+    border: 1px solid rgba(0,220,255,.4);
+    background: rgba(0,15,23,.65);
+    box-shadow:
+        0 0 20px rgba(0,200,255,.12),
+        inset 0 0 30px rgba(0,200,255,.05);
+    backdrop-filter: blur(8px);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.controls{
-display:flex;
-gap:8px;
-margin-top:12px;
+.chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
 }
 
-input{
-flex:1;
-background:#02080d;
-color:white;
-border:1px solid #27cfff66;
-border-radius:10px;
-padding:13px;
-outline:none;
+.message {
+    margin-bottom: 12px;
+    line-height: 1.45;
+    font-size: 14px;
 }
 
-button{
-color:#cfffff;
-background:#072632;
-border:1px solid #24d9ff88;
-border-radius:10px;
-padding:12px 15px;
-cursor:pointer;
+.jarvis {
+    color: #71eaff;
 }
 
-button:hover{
-box-shadow:0 0 20px #00cfff55;
+.user {
+    color: #ffffff;
+    text-align: right;
 }
 
-.quick{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:8px;
-margin-top:10px;
+.controls {
+    display: flex;
+    gap: 8px;
+    padding: 10px;
+    border-top: 1px solid rgba(0,220,255,.25);
 }
 
-@media(max-width:600px){
-.quick{
-grid-template-columns:repeat(2,1fr);
+input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid rgba(0,220,255,.4);
+    background: rgba(0,0,0,.5);
+    color: white;
+    outline: none;
+    border-radius: 8px;
 }
 
-.controls{
-flex-wrap:wrap;
+button {
+    border: 1px solid rgba(0,220,255,.6);
+    background: rgba(0,120,160,.18);
+    color: #9eeeff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: .2s;
 }
 
-input{
-flex-basis:100%;
+button:hover {
+    background: rgba(0,200,255,.25);
+    box-shadow: 0 0 15px rgba(0,220,255,.35);
 }
 
-.chat{
-height:210px;
+.quick {
+    display: flex;
+    gap: 7px;
+    padding: 0 10px 10px;
+    overflow-x: auto;
 }
+
+.quick button {
+    white-space: nowrap;
+    font-size: 11px;
+}
+
+.footer {
+    margin-top: 12px;
+    font-size: 10px;
+    opacity: .45;
+    letter-spacing: 2px;
 }
 </style>
 </head>
@@ -209,238 +227,380 @@ height:210px;
 
 <div class="container">
 
-<h1 class="title">JARVIS</h1>
+    <div class="title">JARVIS</div>
+    <div class="status" id="status">SYSTEM ONLINE</div>
 
-<div class="subtitle">
-PERSONAL AI SYSTEM
-</div>
+    <div class="core">
+        <div class="ring one"></div>
+        <div class="ring two"></div>
+        <div class="ring three"></div>
+        <div class="inner"></div>
+    </div>
 
-<div class="core">
-<div class="ring"></div>
-<div class="inner"></div>
-</div>
+    <div class="panel">
 
-<div class="panel">
+        <div class="chat" id="chat">
+            <div class="message jarvis">
+                JARVIS: Systeme online. Guten Tag.
+            </div>
+        </div>
 
-<div class="status">
-<span id="system">● SYSTEM ONLINE</span>
-<span id="clock">--:--:--</span>
-</div>
+        <div class="quick">
+            <button onclick="command('Wie spät ist es?')">TIME</button>
+            <button onclick="command('Welches Datum ist heute?')">DATE</button>
+            <button onclick="command('Systemstatus')">STATUS</button>
+            <button onclick="command('Hallo Jarvis')">HELLO</button>
+        </div>
 
-<div class="chat" id="chat">
+        <div class="controls">
+            <input
+                id="input"
+                type="text"
+                placeholder="Befehl eingeben..."
+                autocomplete="off"
+            >
+            <button onclick="send()">SEND</button>
+            <button onclick="microphone()">🎙️</button>
+        </div>
 
-<div class="message">
-<div class="label">JARVIS</div>
-Guten Tag. JARVIS ist online. Wie kann ich behilflich sein?
-</div>
+    </div>
 
-</div>
-
-<div class="controls">
-
-<input
-id="input"
-placeholder="Befehl eingeben..."
-autocomplete="off"
->
-
-<button onclick="send()">SEND</button>
-
-<button onclick="microphone()">MIC</button>
-
-</div>
-
-<div class="quick">
-
-<button onclick="command('Wie spät ist es?')">
-TIME
-</button>
-
-<button onclick="command('Welches Datum haben wir?')">
-DATE
-</button>
-
-<button onclick="command('Systemstatus')">
-STATUS
-</button>
-
-<button onclick="command('Hallo Jarvis')">
-HELLO
-</button>
-
-</div>
-
-</div>
+    <div class="footer">
+        JARVIS AI SYSTEM
+    </div>
 
 </div>
 
 <script>
 
-const input=document.getElementById("input");
-const chat=document.getElementById("chat");
-const system=document.getElementById("system");
+const chat = document.getElementById("chat");
+const input = document.getElementById("input");
+const statusText = document.getElementById("status");
 
-function addMessage(name,text,you=false){
+let selectedVoice = null;
 
-const message=document.createElement("div");
 
-message.className="message"+(you?" you":"");
+/* =========================
+   STIMME AUSWÄHLEN
+========================= */
 
-message.innerHTML=
-"<div class='label'>"+name+"</div>"+text;
+function loadVoice() {
 
-chat.appendChild(message);
+    const voices = speechSynthesis.getVoices();
 
-chat.scrollTop=chat.scrollHeight;
+    if (!voices.length) return;
+
+    const germanVoices = voices.filter(v =>
+        v.lang && v.lang.toLowerCase().startsWith("de")
+    );
+
+    /*
+       Wir bevorzugen Stimmen, deren Namen oft
+       männlicher/tiefer klingen.
+    */
+
+    const preferredNames = [
+        "Markus",
+        "Mark",
+        "Martin",
+        "Hans",
+        "Daniel",
+        "Thomas",
+        "Stefan",
+        "Google Deutsch",
+        "Microsoft Conrad",
+        "Microsoft Stefan"
+    ];
+
+    for (const preferred of preferredNames) {
+
+        const found = germanVoices.find(v =>
+            v.name.toLowerCase().includes(preferred.toLowerCase())
+        );
+
+        if (found) {
+            selectedVoice = found;
+            return;
+        }
+    }
+
+    /*
+       Falls keine passende gefunden wird:
+       irgendeine deutsche Stimme verwenden.
+    */
+
+    selectedVoice = germanVoices[0] || voices[0];
 }
 
-function speak(text){
+speechSynthesis.onvoiceschanged = loadVoice;
+loadVoice();
 
-if(!("speechSynthesis" in window)) return;
 
-speechSynthesis.cancel();
+/* =========================
+   CHAT
+========================= */
 
-const voice=new SpeechSynthesisUtterance(text);
+function addMessage(text, type) {
 
-voice.lang="de-DE";
-voice.rate=0.92;
-voice.pitch=0.8;
+    const div = document.createElement("div");
 
-speechSynthesis.speak(voice);
+    div.className = "message " + type;
+
+    div.textContent =
+        type === "jarvis"
+        ? "JARVIS: " + text
+        : "DU: " + text;
+
+    chat.appendChild(div);
+
+    chat.scrollTop = chat.scrollHeight;
 }
 
-function jarvisAnswer(text){
 
-const q=text.toLowerCase();
+/* =========================
+   SPRACHE
+========================= */
 
-let answer;
+function speak(text) {
 
-if(q.includes("zeit")||q.includes("uhr")){
+    if (!("speechSynthesis" in window)) return;
 
-answer="Es ist "+
-new Date().toLocaleTimeString("de-DE",{
-hour:"2-digit",
-minute:"2-digit",
-second:"2-digit"
-})+".";
+    speechSynthesis.cancel();
 
+    const speech = new SpeechSynthesisUtterance(text);
+
+    loadVoice();
+
+    if (selectedVoice) {
+        speech.voice = selectedVoice;
+    }
+
+    speech.lang = "de-DE";
+
+    /*
+       Tiefer / ruhiger JARVIS-Stil.
+       Der Browser entscheidet aber,
+       wie tief die jeweilige Stimme tatsächlich klingt.
+    */
+
+    speech.rate = 0.88;
+    speech.pitch = 0.72;
+    speech.volume = 1;
+
+    speech.onstart = () => {
+        statusText.textContent = "JARVIS SPEAKING";
+    };
+
+    speech.onend = () => {
+        statusText.textContent = "SYSTEM ONLINE";
+    };
+
+    speechSynthesis.speak(speech);
 }
 
-else if(q.includes("datum")||q.includes("welcher tag")){
 
-answer="Heute ist "+
-new Date().toLocaleDateString("de-DE",{
-weekday:"long",
-day:"numeric",
-month:"long",
-year:"numeric"
-})+".";
+/* =========================
+   JARVIS LOGIK
+========================= */
 
+function jarvisAnswer(commandText) {
+
+    const text = commandText.toLowerCase().trim();
+
+    if (
+        text.includes("hallo") ||
+        text.includes("hi") ||
+        text.includes("hey")
+    ) {
+        return "Guten Tag. JARVIS ist bereit.";
+    }
+
+    if (
+        text.includes("wer bist du") ||
+        text.includes("was bist du")
+    ) {
+        return "Ich bin JARVIS, dein persönlicher digitaler Assistent.";
+    }
+
+    if (
+        text.includes("zeit") ||
+        text.includes("wie spät")
+    ) {
+
+        return "Es ist " +
+            new Date().toLocaleTimeString("de-DE", {
+                hour: "2-digit",
+                minute: "2-digit"
+            }) +
+            " Uhr.";
+    }
+
+    if (
+        text.includes("datum") ||
+        text.includes("welcher tag")
+    ) {
+
+        return "Heute ist " +
+            new Date().toLocaleDateString("de-DE", {
+                weekday: "long",
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            }) +
+            ".";
+    }
+
+    if (
+        text.includes("status") ||
+        text.includes("system")
+    ) {
+        return "Alle Systeme arbeiten innerhalb normaler Parameter.";
+    }
+
+    if (
+        text.includes("danke") ||
+        text.includes("thanks")
+    ) {
+        return "Gern geschehen.";
+    }
+
+    if (
+        text.includes("hilfe")
+    ) {
+        return "Ich kann aktuell Uhrzeit, Datum und Systemstatus anzeigen. Weitere Funktionen können später ergänzt werden.";
+    }
+
+    /*
+       WICHTIG:
+       Kein nerviges "Befehl empfangen..."
+       mehr.
+    */
+
+    return "Ich habe dich verstanden. Diese Funktion ist in meiner aktuellen Version noch nicht aktiviert.";
 }
 
-else if(q.includes("status")){
 
-answer="Alle lokalen Systeme laufen stabil. JARVIS ist online.";
+/* =========================
+   SEND
+========================= */
 
+function send() {
+
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    command(text);
+
+    input.value = "";
 }
 
-else if(q.includes("hallo")||q.includes("hey")){
 
-answer="Hallo. JARVIS ist bereit.";
+/* =========================
+   COMMAND
+========================= */
 
+function command(text) {
+
+    addMessage(text, "user");
+
+    const answer = jarvisAnswer(text);
+
+    setTimeout(() => {
+
+        addMessage(answer, "jarvis");
+
+        speak(answer);
+
+    }, 300);
 }
 
-else if(q.includes("wer bist")){
 
-answer="Ich bin JARVIS, deine persönliche Web-Assistentenoberfläche.";
+/* =========================
+   ENTER
+========================= */
 
-}
+input.addEventListener("keydown", function(event) {
 
-else{
-
-answer="Befehl empfangen. JARVIS wartet auf weitere Anweisungen.";
-
-}
-
-addMessage("JARVIS",answer);
-
-speak(answer);
-}
-
-function send(){
-
-const text=input.value.trim();
-
-if(!text)return;
-
-addMessage("YOU",text,true);
-
-input.value="";
-
-jarvisAnswer(text);
-}
-
-function command(text){
-
-input.value=text;
-
-send();
-}
-
-input.addEventListener("keydown",function(event){
-
-if(event.key==="Enter") send();
+    if (event.key === "Enter") {
+        send();
+    }
 
 });
 
-function microphone(){
 
-const Recognition=
-window.SpeechRecognition||
-window.webkitSpeechRecognition;
+/* =========================
+   MIKROFON
+========================= */
 
-if(!Recognition){
+function microphone() {
 
-addMessage(
-"JARVIS",
-"Spracherkennung wird von diesem Browser nicht unterstützt."
-);
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
 
-return;
+    if (!SpeechRecognition) {
+
+        addMessage(
+            "Die Sprachsteuerung wird von diesem Browser nicht unterstützt.",
+            "jarvis"
+        );
+
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "de-DE";
+    recognition.interimResults = false;
+    recognition.continuous = false;
+
+    statusText.textContent = "LISTENING...";
+
+    recognition.start();
+
+    recognition.onresult = function(event) {
+
+        const text =
+            event.results[0][0].transcript;
+
+        input.value = text;
+
+        command(text);
+
+    };
+
+    recognition.onerror = function() {
+
+        statusText.textContent = "SYSTEM ONLINE";
+
+    };
+
+    recognition.onend = function() {
+
+        statusText.textContent = "SYSTEM ONLINE";
+
+    };
 }
 
-const recognition=new Recognition();
 
-recognition.lang="de-DE";
-recognition.interimResults=false;
+/* =========================
+   LIVE CLOCK
+========================= */
 
-system.textContent="● LISTENING";
+setInterval(() => {
 
-recognition.start();
+    document.title =
+        "JARVIS • " +
+        new Date().toLocaleTimeString(
+            "de-DE",
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
 
-recognition.onresult=function(event){
-
-input.value=
-event.results[0][0].transcript;
-
-send();
-
-};
-
-recognition.onend=function(){
-
-system.textContent="● SYSTEM ONLINE";
-
-};
-
-}
-
-setInterval(function(){
-
-document.getElementById("clock").textContent=
-new Date().toLocaleTimeString("de-DE");
-
-},500);
+}, 1000);
 
 </script>
 
