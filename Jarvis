@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>JARVIS</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  overflow:hidden;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#dffaff;
+  background:
+    radial-gradient(circle at center,#073b50 0%,#04121b 35%,#010408 75%);
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(#19cfff12 1px,transparent 1px),
+    linear-gradient(90deg,#19cfff12 1px,transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+}
+
+.container{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:30px 15px;
+}
+
+.title{
+  font-size:clamp(35px,8vw,75px);
+  letter-spacing:12px;
+  margin:0;
+  text-shadow:
+    0 0 10px #19dfff,
+    0 0 35px #00bfff;
+}
+
+.subtitle{
+  color:#5f9eae;
+  font-size:11px;
+  letter-spacing:5px;
+  margin:8px 0 25px;
+}
+
+/* JARVIS CORE */
+
+.core{
+  width:min(320px,70vw);
+  aspect-ratio:1;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:25px;
+}
+
+.core:before{
+  content:"";
+  position:absolute;
+  inset:4%;
+  border-radius:50%;
+  border:2px solid #27dfff;
+  box-shadow:
+    0 0 15px #00d9ff,
+    0 0 50px #00bfff66,
+    inset 0 0 35px #00bfff44;
+}
+
+.core:after{
+  content:"";
+  position:absolute;
+  inset:13%;
+  border-radius:50%;
+  border:1px dashed #72eaff;
+  animation:spin 8s linear infinite;
+}
+
+.inner{
+  width:42%;
+  aspect-ratio:1;
+  border-radius:50%;
+  background:
+    radial-gradient(circle,
+    white 0%,
+    #8af4ff 8%,
+    #19cfff 25%,
+    #05607a 50%,
+    transparent 72%);
+  box-shadow:
+    0 0 20px #fff,
+    0 0 60px #00d9ff,
+    0 0 110px #008cff;
+  animation:pulse 2s infinite;
+}
+
+.ring{
+  position:absolute;
+  inset:25%;
+  border-radius:50%;
+  border:1px solid #8cefff;
+  animation:spin 4s linear infinite reverse;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+@keyframes pulse{
+  50%{
+    transform:scale(1.1);
+    filter:brightness(1.4);
+  }
+}
+
+/* PANEL */
+
+.panel{
+  width:min(900px,100%);
+  background:#06141dcc;
+  border:1px solid #25d9ff55;
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 0 40px #00cfff18;
+  backdrop-filter:blur(12px);
+}
+
+.status{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:#64c9db;
+  margin-bottom:10px;
+}
+
+.chat{
+  height:230px;
+  overflow-y:auto;
+  padding:5px;
+}
+
+.message{
+  padding:10px;
+  margin:7px 0;
+  border-left:2px solid #25d9ff;
+  background:#091d27;
+  border-radius:7px;
+}
+
+.you{
+  border-left-color:#fff;
+}
+
+.label{
+  font-size:9px;
+  letter-spacing:2px;
+  color:#60c7dc;
+  margin-bottom:4px;
+}
+
+.controls{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+input{
+  flex:1;
+  background:#02080d;
+  color:white;
+  border:1px solid #27cfff66;
+  border-radius:10px;
+  padding:13px;
+  outline:none;
+}
+
+button{
+  color:#cfffff;
+  background:#072632;
+  border:1px solid #24d9ff88;
+  border-radius:10px;
+  padding:0 15px;
+  cursor:pointer;
+}
+
+button:hover{
+  box-shadow:0 0 20px #00cfff55;
+}
+
+.quick{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-top:10px;
+}
+
+@media(max-width:600px){
+
+  .quick{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .controls{
+    flex-wrap:wrap;
+  }
+
+  input{
+    flex-basis:100%;
+    height:48px;
+  }
+
+  button{
+    height:45px;
+  }
+
+  .chat{
+    height:210px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1 class="title">JARVIS</h1>
+
+  <div class="subtitle">
+    PERSONAL AI SYSTEM
+  </div>
+
+  <div class="core">
+
+    <div class="ring"></div>
+
+    <div class="inner"></div>
+
+  </div>
+
+  <div class="panel">
+
+    <div class="status">
+
+      <span id="system">
+        ● SYSTEM ONLINE
+      </span>
+
+      <span id="clock">
+        --:--:--
+      </span>
+
+    </div>
+
+    <div class="chat" id="chat">
+
+      <div class="message">
+
+        <div class="label">
+          JARVIS
+        </div>
+
+        Guten Tag. JARVIS ist online.
+        Wie kann ich behilflich sein?
+
+      </div>
+
+    </div>
+
+    <div class="controls">
+
+      <input
+        id="input"
+        placeholder="Befehl eingeben..."
+        autocomplete="off"
+      >
+
+      <button onclick="send()">
+        SEND
+      </button>
+
+      <button onclick="microphone()">
+        MIC
+      </button>
+
+    </div>
+
+    <div class="quick">
+
+      <button onclick="command('Wie spät ist es?')">
+        TIME
+      </button>
+
+      <button onclick="command('Welches Datum haben wir?')">
+        DATE
+      </button>
+
+      <button onclick="command('Systemstatus')">
+        STATUS
+      </button>
+
+      <button onclick="command('Hallo Jarvis')">
+        HELLO
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const input =
+document.getElementById("input");
+
+const chat =
+document.getElementById("chat");
+
+const system =
+document.getElementById("system");
+
+
+function addMessage(name,text,you=false){
+
+  const message =
+  document.createElement("div");
+
+  message.className =
+  "message" + (you ? " you" : "");
+
+  message.innerHTML = `
+    <div class="label">${name}</div>
+    ${text}
+  `;
+
+  chat.appendChild(message);
+
+  chat.scrollTop =
+  chat.scrollHeight;
+}
+
+
+function speak(text){
+
+  if(!("speechSynthesis" in window))
+    return;
+
+  speechSynthesis.cancel();
+
+  const voice =
+  new SpeechSynthesisUtterance(text);
+
+  voice.lang = "de-DE";
+
+  voice.rate = 0.92;
+
+  voice.pitch = 0.8;
+
+  speechSynthesis.speak(voice);
+}
+
+
+function jarvisAnswer(text){
+
+  const q =
+  text.toLowerCase();
+
+  let answer;
+
+
+  if(
+    q.includes("zeit") ||
+    q.includes("uhr")
+  ){
+
+    answer =
+    "Es ist " +
+    new Date().toLocaleTimeString(
+      "de-DE",
+      {
+        hour:"2-digit",
+        minute:"2-digit",
+        second:"2-digit"
+      }
+    ) +
+    ".";
+
+  }
+
+  else if(
+    q.includes("datum") ||
+    q.includes("welcher tag")
+  ){
+
+    answer =
+    "Heute ist " +
+    new Date().toLocaleDateString(
+      "de-DE",
+      {
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      }
+    ) +
+    ".";
+
+  }
+
+  else if(q.includes("status")){
+
+    answer =
+    "Alle lokalen Systeme laufen stabil. JARVIS ist online.";
+
+  }
+
+  else if(
+    q.includes("hallo") ||
+    q.includes("hey")
+  ){
+
+    answer =
+    "Hallo. JARVIS ist bereit.";
+
+  }
+
+  else if(q.includes("wer bist")){
+
+    answer =
+    "Ich bin JARVIS, deine persönliche Web-Assistentenoberfläche.";
+
+  }
+
+  else{
+
+    answer =
+    "Befehl empfangen. Diese Basisversion kann später mit einer echten KI verbunden werden.";
+
+  }
+
+
+  addMessage(
+    "JARVIS",
+    answer
+  );
+
+  speak(answer);
+}
+
+
+function send(){
+
+  const text =
+  input.value.trim();
+
+  if(!text)
+    return;
+
+  addMessage(
+    "YOU",
+    text,
+    true
+  );
+
+  input.value = "";
+
+  jarvisAnswer(text);
+}
+
+
+function command(text){
+
+  input.value = text;
+
+  send();
+}
+
+
+input.addEventListener(
+  "keydown",
+  function(event){
+
+    if(event.key === "Enter")
+      send();
+
+  }
+);
+
+
+function microphone(){
+
+  const Recognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if(!Recognition){
+
+    addMessage(
+      "JARVIS",
+      "Spracherkennung wird von diesem Browser nicht unterstützt."
+    );
+
+    return;
+  }
+
+
+  const recognition =
+  new Recognition();
+
+  recognition.lang =
+  "de-DE";
+
+  recognition.interimResults =
+  false;
+
+  system.textContent =
+  "● LISTENING";
+
+
+  recognition.start();
+
+
+  recognition.onresult =
+  function(event){
+
+    input.value =
+    event.results[0][0].transcript;
+
+    send();
+
+  };
+
+
+  recognition.onend =
+  function(){
+
+    system.textContent =
+    "● SYSTEM ONLINE";
+
+  };
+
+}
+
+
+setInterval(
+
+  function(){
+
+    document.getElementById(
+      "clock"
+    ).textContent =
+    new Date().toLocaleTimeString(
+      "de-DE"
+    );
+
+  },
+
+  500
+
+);
+
+</script>
+
+</body>
+</html>
