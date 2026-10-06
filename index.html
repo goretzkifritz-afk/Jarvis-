@@ -1,721 +1,628 @@
-<!DOCTYPE html>
-<html lang="de">
+<!DOCTYPEhtml>
+<htmllang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#02060b">
+<metacharset="UTF-8">
+<metaname="viewport"content="width=device-width,initial-scale=1,viewport-fit=cover">
+<metaname="theme-color"content="#02060b">
 <title>JARVIS</title>
-
 <style>
 *{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
 }
-
 html,body{
-  margin:0;
-  min-height:100%;
-  background:#02060b;
-  color:#eafcff;
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif;
+margin:0;
+min-height:100%;
+background:#02060b;
+color:#eafcff;
+font-family:-apple-system,BlinkMacSystemFont,"SFProDisplay",Arial,sans-serif;
 }
-
 body{
-  min-height:100vh;
-  min-height:100dvh;
-  overflow-x:hidden;
-  background:
-    radial-gradient(circle at 50% 38%,rgba(0,210,255,.13),transparent 28%),
-    radial-gradient(circle at 20% 10%,rgba(0,110,255,.08),transparent 25%),
-    #02060b;
+min-height:100vh;
+min-height:100dvh;
+overflow-x:hidden;
+background:
+radial-gradient(circleat50%38%,rgba(0,210,255,.13),transparent28%),
+radial-gradient(circleat20%10%,rgba(0,110,255,.08),transparent25%),
+#02060b;
 }
-
 body:before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  opacity:.15;
-  background-image:
-    linear-gradient(rgba(80,220,255,.08) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(80,220,255,.08) 1px,transparent 1px);
-  background-size:35px 35px;
-  mask-image:linear-gradient(to bottom,black,transparent 80%);
+content:"";
+position:fixed;
+inset:0;
+pointer-events:none;
+opacity:.15;
+background-image:
+linear-gradient(rgba(80,220,255,.08)1px,transparent1px),
+linear-gradient(90deg,rgba(80,220,255,.08)1px,transparent1px);
+background-size:35px35px;
+mask-image:linear-gradient(tobottom,black,transparent80%);
 }
-
 .app{
-  width:min(100%,520px);
-  min-height:100dvh;
-  margin:auto;
-  padding:
-    calc(18px + env(safe-area-inset-top))
-    16px
-    calc(16px + env(safe-area-inset-bottom));
-  display:flex;
-  flex-direction:column;
+width:min(100%,520px);
+min-height:100dvh;
+margin:auto;
+padding:
+calc(18px+env(safe-area-inset-top))
+16px
+calc(16px+env(safe-area-inset-bottom));
+display:flex;
+flex-direction:column;
 }
-
 .header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
-
 .brand{
-  font-size:12px;
-  letter-spacing:4px;
-  color:#8feaff;
-  font-weight:700;
+font-size:12px;
+letter-spacing:4px;
+color:#8feaff;
+font-weight:700;
 }
-
 .status{
-  font-size:10px;
-  letter-spacing:2px;
-  color:#69eaff;
-  opacity:.75;
+font-size:10px;
+letter-spacing:2px;
+color:#69eaff;
+opacity:.75;
 }
-
 .title{
-  text-align:center;
-  margin-top:22px;
-  font-size:clamp(34px,10vw,52px);
-  letter-spacing:8px;
-  font-weight:300;
-  text-shadow:0 0 25px rgba(0,220,255,.65);
+text-align:center;
+margin-top:22px;
+font-size:clamp(34px,10vw,52px);
+letter-spacing:8px;
+font-weight:300;
+text-shadow:0025pxrgba(0,220,255,.65);
 }
-
 .subtitle{
-  text-align:center;
-  margin-top:-5px;
-  font-size:9px;
-  letter-spacing:4px;
-  color:#71909a;
+text-align:center;
+margin-top:-5px;
+font-size:9px;
+letter-spacing:4px;
+color:#71909a;
 }
-
-/* CORE */
-
 .coreWrap{
-  position:relative;
-  width:min(72vw,330px);
-  aspect-ratio:1;
-  margin:22px auto 16px;
-  display:grid;
-  place-items:center;
+position:relative;
+width:min(72vw,330px);
+aspect-ratio:1;
+margin:22pxauto16px;
+display:grid;
+place-items:center;
 }
-
 .core{
-  position:relative;
-  width:37%;
-  aspect-ratio:1;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 50% 45%,
-      #fff 0 5%,
-      #8eeeff 10%,
-      #00d9ff 27%,
-      #006cff 55%,
-      rgba(0,100,255,.15) 70%,
-      transparent 72%);
-  box-shadow:
-    0 0 20px #00d9ff,
-    0 0 55px rgba(0,190,255,.7),
-    0 0 110px rgba(0,100,255,.35);
-  animation:pulse 2.8s ease-in-out infinite;
-  z-index:5;
+position:relative;
+width:37%;
+aspect-ratio:1;
+border-radius:50%;
+background:
+radial-gradient(circleat50%45%,
+#fff05%,
+#8eeeff10%,
+#00d9ff27%,
+#006cff55%,
+rgba(0,100,255,.15)70%,
+transparent72%);
+box-shadow:
+0020px#00d9ff,
+0055pxrgba(0,190,255,.7),
+00110pxrgba(0,100,255,.35);
+animation:pulse2.8sease-in-outinfinite;
+z-index:5;
 }
-
 .core:after{
-  content:"";
-  position:absolute;
-  inset:18%;
-  border:1px solid rgba(255,255,255,.8);
-  border-radius:50%;
-  animation:spin 5s linear infinite reverse;
+content:"";
+position:absolute;
+inset:18%;
+border:1pxsolidrgba(255,255,255,.8);
+border-radius:50%;
+animation:spin5slinearinfinitereverse;
 }
-
 .ring{
-  position:absolute;
-  border:1px solid rgba(73,220,255,.45);
-  border-radius:50%;
-  box-shadow:0 0 15px rgba(0,210,255,.12);
+position:absolute;
+border:1pxsolidrgba(73,220,255,.45);
+border-radius:50%;
+box-shadow:0015pxrgba(0,210,255,.12);
 }
-
 .r1{
-  inset:14%;
-  animation:spin 8s linear infinite;
+inset:14%;
+animation:spin8slinearinfinite;
 }
-
 .r2{
-  inset:4%;
-  border-style:dashed;
-  opacity:.55;
-  animation:spin 13s linear infinite reverse;
+inset:4%;
+border-style:dashed;
+opacity:.55;
+animation:spin13slinearinfinitereverse;
 }
-
 .r3{
-  inset:22%;
-  border-color:rgba(255,255,255,.2);
-  animation:spin 5s linear infinite;
+inset:22%;
+border-color:rgba(255,255,255,.2);
+animation:spin5slinearinfinite;
 }
-
 .scan{
-  position:absolute;
-  width:92%;
-  height:1px;
-  background:linear-gradient(90deg,transparent,#7ff3ff,transparent);
-  box-shadow:0 0 12px #00d9ff;
-  animation:scan 3.2s ease-in-out infinite;
-  opacity:.55;
+position:absolute;
+width:92%;
+height:1px;
+background:linear-gradient(90deg,transparent,#7ff3ff,transparent);
+box-shadow:0012px#00d9ff;
+animation:scan3.2sease-in-outinfinite;
+opacity:.55;
 }
-
 .hud{
-  position:absolute;
-  font-size:8px;
-  letter-spacing:2px;
-  color:#6bdfff;
-  opacity:.65;
+position:absolute;
+font-size:8px;
+letter-spacing:2px;
+color:#6bdfff;
+opacity:.65;
 }
-
 .hud.one{top:8%;left:3%}
 .hud.two{bottom:9%;right:1%}
 .hud.three{top:25%;right:-2%}
-
-@keyframes pulse{
-  50%{transform:scale(1.06)}
+@keyframespulse{
+50%{transform:scale(1.06)}
 }
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
+@keyframesspin{
+to{transform:rotate(360deg)}
 }
-
-@keyframes scan{
-  0%,100%{transform:translateY(-110px);opacity:0}
-  50%{transform:translateY(110px);opacity:.7}
+@keyframesscan{
+0%,100%{transform:translateY(-110px);opacity:0}
+50%{transform:translateY(110px);opacity:.7}
 }
-
-/* INFO */
-
 .infoGrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-bottom:12px;
+display:grid;
+grid-template-columns:1fr1fr;
+gap:9px;
+margin-bottom:12px;
 }
-
 .card{
-  padding:11px 12px;
-  border:1px solid rgba(98,221,255,.15);
-  border-radius:17px;
-  background:rgba(10,25,34,.42);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
+padding:11px12px;
+border:1pxsolidrgba(98,221,255,.15);
+border-radius:17px;
+background:rgba(10,25,34,.42);
+backdrop-filter:blur(18px);
+-webkit-backdrop-filter:blur(18px);
 }
-
 .cardLabel{
-  font-size:8px;
-  letter-spacing:2px;
-  color:#64838e;
+font-size:8px;
+letter-spacing:2px;
+color:#64838e;
 }
-
 .cardValue{
-  margin-top:4px;
-  font-size:12px;
-  color:#baf5ff;
+margin-top:4px;
+font-size:12px;
+color:#baf5ff;
 }
-
-/* CHAT */
-
 .chat{
-  flex:1;
-  min-height:180px;
-  max-height:300px;
-  overflow-y:auto;
-  padding:4px 2px;
-  scrollbar-width:none;
+flex:1;
+min-height:180px;
+max-height:300px;
+overflow-y:auto;
+padding:4px2px;
+scrollbar-width:none;
 }
-
 .chat::-webkit-scrollbar{
-  display:none;
+display:none;
 }
-
 .message{
-  max-width:86%;
-  margin:8px 0;
-  padding:11px 13px;
-  border:1px solid rgba(80,220,255,.12);
-  border-radius:16px;
-  background:rgba(8,20,28,.55);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  font-size:13px;
-  line-height:1.45;
+max-width:86%;
+margin:8px0;
+padding:11px13px;
+border:1pxsolidrgba(80,220,255,.12);
+border-radius:16px;
+background:rgba(8,20,28,.55);
+backdrop-filter:blur(18px);
+-webkit-backdrop-filter:blur(18px);
+font-size:13px;
+line-height:1.45;
 }
-
 .message.jarvis{
-  box-shadow:0 0 22px rgba(0,190,255,.05);
+box-shadow:0022pxrgba(0,190,255,.05);
 }
-
 .message.you{
-  margin-left:auto;
-  text-align:right;
-  border-color:rgba(255,255,255,.08);
+margin-left:auto;
+text-align:right;
+border-color:rgba(255,255,255,.08);
 }
-
 .name{
-  display:block;
-  font-size:8px;
-  letter-spacing:2px;
-  color:#5fdfff;
-  margin-bottom:3px;
+display:block;
+font-size:8px;
+letter-spacing:2px;
+color:#5fdfff;
+margin-bottom:3px;
 }
-
-/* CONTROLS */
-
 .controls{
-  display:flex;
-  gap:8px;
-  margin-top:10px;
+display:flex;
+gap:8px;
+margin-top:10px;
 }
-
 .inputWrap{
-  flex:1;
-  display:flex;
-  align-items:center;
-  border:1px solid rgba(94,221,255,.18);
-  border-radius:18px;
-  background:rgba(8,20,28,.62);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  padding-left:13px;
+flex:1;
+display:flex;
+align-items:center;
+border:1pxsolidrgba(94,221,255,.18);
+border-radius:18px;
+background:rgba(8,20,28,.62);
+backdrop-filter:blur(20px);
+-webkit-backdrop-filter:blur(20px);
+padding-left:13px;
 }
-
 input{
-  width:100%;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:white;
-  font-size:13px;
-  padding:13px 8px 13px 0;
+width:100%;
+border:0;
+outline:0;
+background:transparent;
+color:white;
+font-size:13px;
+padding:13px8px13px0;
 }
-
 input::placeholder{
-  color:#55717a;
+color:#55717a;
 }
-
 button{
-  border:1px solid rgba(90,220,255,.2);
-  color:#bff8ff;
-  background:rgba(9,25,34,.68);
-  border-radius:17px;
-  min-width:46px;
-  min-height:46px;
-  font-size:18px;
-  cursor:pointer;
-  outline:none;
-  box-shadow:none;
-  transition:
-    transform .14s ease,
-    background .18s ease,
-    border-color .18s ease,
-    box-shadow .18s ease;
-  -webkit-appearance:none;
-  appearance:none;
+border:1pxsolidrgba(90,220,255,.2);
+color:#bff8ff;
+background:rgba(9,25,34,.68);
+border-radius:17px;
+min-width:46px;
+min-height:46px;
+font-size:18px;
+cursor:pointer;
+outline:none;
+box-shadow:none;
+transition:
+transform.14sease,
+background.18sease,
+border-color.18sease,
+box-shadow.18sease;
+-webkit-appearance:none;
+appearance:none;
 }
-
-/* FIX: kein hängenbleibender iOS-Fokus-Glow */
-
 button:focus,
 button:focus-visible{
-  outline:none;
-  box-shadow:none;
+outline:none;
+box-shadow:none;
 }
-
 button.active{
-  background:rgba(0,190,255,.18);
-  border-color:rgba(80,225,255,.5);
-  box-shadow:
-    0 0 18px rgba(0,210,255,.25),
-    inset 0 0 14px rgba(0,210,255,.08);
+background:rgba(0,190,255,.18);
+border-color:rgba(80,225,255,.5);
+box-shadow:
+0018pxrgba(0,210,255,.25),
+inset0014pxrgba(0,210,255,.08);
 }
-
 button:active{
-  transform:scale(.94);
+transform:scale(.94);
 }
-
 button.primary{
-  min-width:58px;
-  border-radius:19px;
+min-width:58px;
+border-radius:19px;
 }
-
 .quick{
-  display:flex;
-  gap:7px;
-  overflow-x:auto;
-  margin-top:9px;
-  scrollbar-width:none;
+display:flex;
+gap:7px;
+overflow-x:auto;
+margin-top:9px;
+scrollbar-width:none;
 }
-
 .quick::-webkit-scrollbar{
-  display:none;
+display:none;
 }
-
-.quick button{
-  min-width:auto;
-  min-height:32px;
-  padding:0 12px;
-  border-radius:12px;
-  font-size:9px;
-  letter-spacing:1px;
+.quickbutton{
+min-width:auto;
+min-height:32px;
+padding:012px;
+border-radius:12px;
+font-size:9px;
+letter-spacing:1px;
 }
-
-/* FOOTER */
-
 .footer{
-  text-align:center;
-  margin-top:12px;
-  font-size:7px;
-  letter-spacing:2px;
-  color:#3e5962;
+text-align:center;
+margin-top:12px;
+font-size:7px;
+letter-spacing:2px;
+color:#3e5962;
 }
-
-/* THINKING */
-
 .typing{
-  display:inline-flex;
-  gap:4px;
+display:inline-flex;
+gap:4px;
 }
-
-.typing span{
-  width:4px;
-  height:4px;
-  border-radius:50%;
-  background:#67e5ff;
-  animation:dot 1s infinite;
+.typingspan{
+width:4px;
+height:4px;
+border-radius:50%;
+background:#67e5ff;
+animation:dot1sinfinite;
 }
-
-.typing span:nth-child(2){animation-delay:.15s}
-.typing span:nth-child(3){animation-delay:.3s}
-
-@keyframes dot{
-  0%,80%,100%{opacity:.2;transform:translateY(0)}
-  40%{opacity:1;transform:translateY(-3px)}
+.typingspan:nth-child(2){animation-delay:.15s}
+.typingspan:nth-child(3){animation-delay:.3s}
+@keyframesdot{
+0%,80%,100%{opacity:.2;transform:translateY(0)}
+40%{opacity:1;transform:translateY(-3px)}
 }
 </style>
 </head>
-
 <body>
-<div class="app">
-
-  <div class="header">
-    <div class="brand">JARVIS</div>
-    <div class="status" id="status">ONLINE</div>
-  </div>
-
-  <div class="title">JARVIS</div>
-  <div class="subtitle">FRITZ ADVANCED SYSTEMS</div>
-
-  <div class="coreWrap">
-    <div class="core"></div>
-    <div class="ring r1"></div>
-    <div class="ring r2"></div>
-    <div class="ring r3"></div>
-    <div class="scan"></div>
-
-    <div class="hud one">CORE 01</div>
-    <div class="hud two">AI LINK</div>
-    <div class="hud three">ONLINE</div>
-  </div>
-
-  <div class="infoGrid">
-    <div class="card">
-      <div class="cardLabel">TIME</div>
-      <div class="cardValue" id="time">--:--:--</div>
-    </div>
-
-    <div class="card">
-      <div class="cardLabel">DATE</div>
-      <div class="cardValue" id="date">--.--.----</div>
-    </div>
-  </div>
-
-  <div class="chat" id="chat">
-    <div class="message jarvis">
-      <span class="name">JARVIS</span>
-      Systems online. How may I assist you?
-    </div>
-  </div>
-
-  <div class="controls">
-    <div class="inputWrap">
-      <input id="input" autocomplete="off" placeholder="Ask JARVIS..." />
-    </div>
-
-    <button id="mic" aria-label="Mikrofon">🎙️</button>
-    <button id="send" class="primary" aria-label="Senden">➤</button>
-  </div>
-
-  <div class="quick">
-    <button data-command="Wie spät ist es?">TIME</button>
-    <button data-command="Wer bist du?">IDENTITY</button>
-    <button data-command="Was kannst du?">SYSTEM</button>
-  </div>
-
-  <div class="footer">
-    JARVIS // FRITZ ADVANCED SYSTEMS // © 2026
-  </div>
-
+<divclass="app">
+<divclass="header">
+<divclass="brand">JARVIS</div>
+<divclass="status"id="status">ONLINE</div>
 </div>
-
+<divclass="title">JARVIS</div>
+<divclass="subtitle">FRITZADVANCEDSYSTEMS</div>
+<divclass="coreWrap">
+<divclass="core"></div>
+<divclass="ringr1"></div>
+<divclass="ringr2"></div>
+<divclass="ringr3"></div>
+<divclass="scan"></div>
+<divclass="hudone">CORE01</div>
+<divclass="hudtwo">AILINK</div>
+<divclass="hudthree">ONLINE</div>
+</div>
+<divclass="infoGrid">
+<divclass="card">
+<divclass="cardLabel">TIME</div>
+<divclass="cardValue"id="time">--:--:--</div>
+</div>
+<divclass="card">
+<divclass="cardLabel">DATE</div>
+<divclass="cardValue"id="date">--.--.----</div>
+</div>
+</div>
+<divclass="chat"id="chat">
+<divclass="messagejarvis">
+<spanclass="name">JARVIS</span>
+Systemeonline.Wiekannichbehilflichsein?
+</div>
+</div>
+<divclass="controls">
+<divclass="inputWrap">
+<input
+id="input"
+autocomplete="off"
+placeholder="FragJARVIS..."
+/>
+</div>
+<buttonid="mic"aria-label="Mikrofon">🎙️</button>
+<buttonid="send"class="primary"aria-label="Senden">➤</button>
+</div>
+<divclass="quick">
+<buttondata-command="Wiespätistes?">TIME</button>
+<buttondata-command="Werbistdu?">IDENTITY</button>
+<buttondata-command="Waskannstdu?">SYSTEM</button>
+</div>
+<divclass="footer">
+JARVIS//FRITZADVANCEDSYSTEMS//©2026
+</div>
+</div>
 <script>
-const input = document.getElementById("input");
-const chat = document.getElementById("chat");
-const statusEl = document.getElementById("status");
-const micBtn = document.getElementById("mic");
-
-function addMessage(text, you=false){
-  const div = document.createElement("div");
-  div.className = "message " + (you ? "you" : "jarvis");
-
-  const name = document.createElement("span");
-  name.className = "name";
-  name.textContent = you ? "YOU" : "JARVIS";
-
-  const content = document.createElement("span");
-  content.textContent = text;
-
-  div.appendChild(name);
-  div.appendChild(content);
-
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
+constAPI_URL=
+"https://jarvis-fritz-m6v75b18k-fritz-goretzki.vercel.app/api/chat";
+constinput=document.getElementById("input");
+constchat=document.getElementById("chat");
+conststatusEl=document.getElementById("status");
+constmicBtn=document.getElementById("mic");
+functionaddMessage(text,you=false){
+constdiv=document.createElement("div");
+div.className="message"+(you?"you":"jarvis");
+constname=document.createElement("span");
+name.className="name";
+name.textContent=you?"YOU":"JARVIS";
+constcontent=document.createElement("span");
+content.textContent=text;
+div.appendChild(name);
+div.appendChild(content);
+chat.appendChild(div);
+chat.scrollTop=chat.scrollHeight;
 }
-
-function addThinking(){
-  const div = document.createElement("div");
-  div.className = "message jarvis";
-  div.id = "thinking";
-
-  div.innerHTML = `
-    <span class="name">JARVIS</span>
-    <span class="typing">
-      <span></span><span></span><span></span>
-    </span>
-  `;
-
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
+functionaddThinking(){
+constdiv=document.createElement("div");
+div.className="messagejarvis";
+div.id="thinking";
+div.innerHTML=`
+<spanclass="name">JARVIS</span>
+<spanclass="typing">
+<span></span>
+<span></span>
+<span></span>
+</span>
+`;
+chat.appendChild(div);
+chat.scrollTop=chat.scrollHeight;
 }
-
-function removeThinking(){
-  document.getElementById("thinking")?.remove();
+functionremoveThinking(){
+document.getElementById("thinking")?.remove();
 }
-
-function speakFallback(text){
-  if(!("speechSynthesis" in window)) return;
-
-  speechSynthesis.cancel();
-
-  const speech = new SpeechSynthesisUtterance(text);
-  speech.lang = "en-GB";
-  speech.rate = 0.88;
-  speech.pitch = 0.72;
-  speech.volume = 1;
-
-  const voices = speechSynthesis.getVoices();
-
-  const preferred =
-    voices.find(v => /Daniel|Arthur|Google UK English Male|Microsoft George/i.test(v.name)) ||
-    voices.find(v => /en-GB/i.test(v.lang)) ||
-    voices.find(v => /en/i.test(v.lang));
-
-  if(preferred) speech.voice = preferred;
-
-  speechSynthesis.speak(speech);
+/*DEUTSCHEJARVIS-BROWSERSTIMME*/
+functionspeak(text){
+if(!("speechSynthesis"inwindow))return;
+speechSynthesis.cancel();
+constspeech=newSpeechSynthesisUtterance(text);
+speech.lang="de-DE";
+speech.rate=0.88;
+speech.pitch=0.72;
+speech.volume=1;
+constvoices=speechSynthesis.getVoices();
+constpreferred=
+voices.find(v=>/Markus|Martin|Hans|Daniel|Thomas|Stefan|Conrad/i.test(v.name)&&/de-DE|de_DE|German|Deutsch/i.test(v.lang+v.name))||
+voices.find(v=>/de-DE|de_DE/i.test(v.lang))||
+voices.find(v=>/German|Deutsch/i.test(v.name));
+if(preferred){
+speech.voice=preferred;
 }
-
+speechSynthesis.speak(speech);
+}
+/*JARVISAI*/
+asyncfunctionaskJarvis(text){
+addMessage(text,true);
+addThinking();
+statusEl.textContent="THINKING";
+try{
+constresponse=awaitfetch(API_URL,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:text
+})
+});
+if(!response.ok){
+leterrorText="";
+try{
+errorText=awaitresponse.text();
+}catch(e){}
+console.error(
+"JARVISAPIERROR:",
+response.status,
+errorText
+);
+thrownewError(
+"APIerror"+response.status
+);
+}
+constdata=awaitresponse.json();
+console.log("JARVISAPIRESPONSE:",data);
+removeThinking();
 /*
-  ElevenLabs:
-  Dein Vercel-Backend wird später /api/voice bereitstellen.
-  Falls es noch nicht eingerichtet ist, fällt JARVIS automatisch
-  auf die Browser-Stimme zurück.
+UnterstütztmehreremöglicheBackend-Antworten:
+{reply:"..."}
+{answer:"..."}
+{content:"..."}
 */
-
-async function speak(text){
-  try{
-    const response = await fetch("https://DEIN-VERCEL-PROJEKT.vercel.app/api/voice",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({text})
-    });
-
-    if(!response.ok) throw new Error("Voice API unavailable");
-
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-    const audio = new Audio(url);
-
-    audio.onended = () => URL.revokeObjectURL(url);
-
-    await audio.play();
-  }catch(error){
-    speakFallback(text);
-  }
+constanswer=
+data.reply||
+data.answer||
+data.content;
+if(!answer){
+thrownewError("KeineAntwortvomJARVIS-Backend.");
 }
-
-async function askJarvis(text){
-  addMessage(text,true);
-  addThinking();
-
-  statusEl.textContent = "THINKING";
-
-  try{
-    const response = await fetch("https://DEIN-VERCEL-PROJEKT.vercel.app/api/chat",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        message:text
-      })
-    });
-
-    if(!response.ok){
-      throw new Error("AI API unavailable");
-    }
-
-    const data = await response.json();
-
-    removeThinking();
-
-    const answer = data.answer || "I was unable to process that request.";
-
-    addMessage(answer);
-    statusEl.textContent = "ONLINE";
-
-    await speak(answer);
-
-  }catch(error){
-    removeThinking();
-
-    const fallback =
-      "I am currently operating in local mode. My advanced AI connection is not available yet.";
-
-    addMessage(fallback);
-    statusEl.textContent = "LOCAL";
-    speakFallback(fallback);
-  }
+addMessage(answer);
+statusEl.textContent="ONLINE";
+speak(answer);
+}catch(error){
+console.error("JARVISCONNECTIONERROR:",error);
+removeThinking();
+addMessage(
+"MeineKI-Verbindungkonntegeradenichthergestelltwerden.BitteprüfedieJARVIS-API."
+);
+statusEl.textContent="ERROR";
 }
-
-function send(){
-  const text = input.value.trim();
-  if(!text) return;
-
-  input.value = "";
-  askJarvis(text);
 }
-
-document.getElementById("send").addEventListener("click", send);
-
-input.addEventListener("keydown", e=>{
-  if(e.key === "Enter"){
-    e.preventDefault();
-    send();
-  }
+functionsend(){
+consttext=input.value.trim();
+if(!text)return;
+input.value="";
+askJarvis(text);
+}
+document
+.getElementById("send")
+.addEventListener("click",send);
+input.addEventListener("keydown",e=>{
+if(e.key==="Enter"){
+e.preventDefault();
+send();
+}
 });
-
-/* QUICK BUTTONS */
-
-document.querySelectorAll(".quick button").forEach(button=>{
-  button.addEventListener("click",()=>{
-    document.querySelectorAll("button").forEach(b=>b.classList.remove("active"));
-
-    button.classList.add("active");
-
-    setTimeout(()=>{
-      button.classList.remove("active");
-      button.blur();
-    },180);
-
-    input.value = button.dataset.command;
-    send();
-  });
+/*QUICKCOMMANDS*/
+document
+.querySelectorAll(".quickbutton")
+.forEach(button=>{
+button.addEventListener("click",()=>{
+document
+.querySelectorAll("button")
+.forEach(b=>b.classList.remove("active"));
+button.classList.add("active");
+setTimeout(()=>{
+button.classList.remove("active");
+button.blur();
+},180);
+input.value=button.dataset.command;
+send();
 });
-
-/* MIC */
-
-let recognition = null;
-
-if("SpeechRecognition" in window || "webkitSpeechRecognition" in window){
-
-  const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  recognition = new SpeechRecognition();
-
-  recognition.lang = "de-DE";
-  recognition.continuous = false;
-  recognition.interimResults = false;
-
-  recognition.onstart = ()=>{
-    micBtn.classList.add("active");
-    statusEl.textContent = "LISTENING";
-  };
-
-  recognition.onend = ()=>{
-    micBtn.classList.remove("active");
-    statusEl.textContent = "ONLINE";
-  };
-
-  recognition.onerror = ()=>{
-    micBtn.classList.remove("active");
-    statusEl.textContent = "ONLINE";
-  };
-
-  recognition.onresult = event=>{
-    const text = event.results[0][0].transcript;
-    input.value = text;
-    send();
-  };
-
+});
+/*MIKROFON*/
+letrecognition=null;
+if(
+"SpeechRecognition"inwindow||
+"webkitSpeechRecognition"inwindow
+){
+constSpeechRecognition=
+window.SpeechRecognition||
+window.webkitSpeechRecognition;
+recognition=newSpeechRecognition();
+recognition.lang="de-DE";
+recognition.continuous=false;
+recognition.interimResults=false;
+recognition.onstart=()=>{
+micBtn.classList.add("active");
+statusEl.textContent="LISTENING";
+};
+recognition.onend=()=>{
+micBtn.classList.remove("active");
+if(statusEl.textContent==="LISTENING"){
+statusEl.textContent="ONLINE";
+}
+};
+recognition.onerror=()=>{
+micBtn.classList.remove("active");
+statusEl.textContent="ONLINE";
+};
+recognition.onresult=event=>{
+consttext=
+event.results[0][0].transcript;
+input.value=text;
+send();
+};
 }else{
-  micBtn.style.opacity = ".35";
+micBtn.style.opacity=".35";
 }
-
 micBtn.addEventListener("click",()=>{
-  if(!recognition) return;
-
-  try{
-    recognition.start();
-  }catch(e){}
+if(!recognition)return;
+try{
+recognition.start();
+}catch(e){}
 });
-
-/* TIME */
-
-function updateClock(){
-  const now = new Date();
-
-  document.getElementById("time").textContent =
-    now.toLocaleTimeString("de-DE");
-
-  document.getElementById("date").textContent =
-    now.toLocaleDateString("de-DE");
+/*UHR*/
+functionupdateClock(){
+constnow=newDate();
+document.getElementById("time").textContent=
+now.toLocaleTimeString("de-DE");
+document.getElementById("date").textContent=
+now.toLocaleDateString("de-DE");
 }
-
 updateClock();
 setInterval(updateClock,1000);
-
-/* VOICE LIST */
-
-if("speechSynthesis" in window){
-  speechSynthesis.onvoiceschanged = ()=>{
-    speechSynthesis.getVoices();
-  };
+/*VOICELIST*/
+if("speechSynthesis"inwindow){
+speechSynthesis.onvoiceschanged=()=>{
+speechSynthesis.getVoices();
+};
 }
+/*APISTATUSTEST*/
+asyncfunctioncheckAPI(){
+try{
+constresponse=awaitfetch(API_URL,{
+method:"OPTIONS"
+});
+console.log(
+"JARVISAPISTATUS:",
+response.status
+);
+}catch(error){
+console.log(
+"APIstatuscheckfailed:",
+error
+);
+}
+}
+checkAPI();
 </script>
-
 </body>
 </html>
+
+Jetzt:Ersetzedamitdeinekompletteindex.html→Commitchanges→wartebeiVercelaufReady/Production.
+
+Danachtestenwir**„HalloJARVIS“**.
+
+FallsdanneinFehlerkommt,istdassehrwahrscheinlichnichtmehrdeinFrontend,sondernapi/chat.js/CORS.DieOpenAI-Seitebestätigt,dassdieResponsesAPIfürneueIntegrationenverwendetwerdensoll.
+
+Undwichtig:API-NutzungkannKostenverursachen;dieaktuellenPreisehängenvomverwendetenModellab.
