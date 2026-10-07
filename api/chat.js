@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     "Access-Control-Allow-Headers",
     "Content-Type"
   );
-  // Browser-Preflight
+  // Browser Preflight
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
@@ -27,6 +27,13 @@ export default async function handler(req, res) {
     });
   }
   try {
+    // API Key prüfen
+    if (!process.env.OPENAI_API_KEY) {
+      console.error("OPENAI_API_KEY fehlt.");
+      return res.status(500).json({
+        error: "OPENAI_API_KEY ist nicht gesetzt.",
+      });
+    }
     const { message } = req.body || {};
     // Nachricht prüfen
     if (!message || typeof message !== "string") {
@@ -34,16 +41,9 @@ export default async function handler(req, res) {
         error: "Keine Nachricht erhalten.",
       });
     }
-    // Prüfen ob API-Key vorhanden ist
-    if (!process.env.OPENAI_API_KEY) {
-      console.error("OPENAI_API_KEY fehlt in Vercel.");
-      return res.status(500).json({
-        error: "OPENAI_API_KEY ist nicht gesetzt.",
-      });
-    }
-    // OpenAI Responses API
+    // OpenAI Anfrage
     const response = await client.responses.create({
-      model: "gpt-6-luna",
+      model: "gpt-5",
       instructions: `
 Du bist JARVIS, der persönliche KI-Assistent von Fritz.
 Antworte immer auf Deutsch.
@@ -61,6 +61,7 @@ Halte Antworten normalerweise übersichtlich und direkt.
 `,
       input: message,
     });
+    console.log("JARVIS Antwort erfolgreich erzeugt.");
     return res.status(200).json({
       reply: response.output_text,
     });
