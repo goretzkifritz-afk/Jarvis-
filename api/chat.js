@@ -20,6 +20,7 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
+  // Nur POST erlauben
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed",
@@ -27,11 +28,20 @@ export default async function handler(req, res) {
   }
   try {
     const { message } = req.body || {};
+    // Nachricht prüfen
     if (!message || typeof message !== "string") {
       return res.status(400).json({
         error: "Keine Nachricht erhalten.",
       });
     }
+    // Prüfen ob API-Key vorhanden ist
+    if (!process.env.OPENAI_API_KEY) {
+      console.error("OPENAI_API_KEY fehlt in Vercel.");
+      return res.status(500).json({
+        error: "OPENAI_API_KEY ist nicht gesetzt.",
+      });
+    }
+    // OpenAI Responses API
     const response = await client.responses.create({
       model: "gpt-6-luna",
       instructions: `
@@ -58,6 +68,7 @@ Halte Antworten normalerweise übersichtlich und direkt.
     console.error("JARVIS API ERROR:", error);
     return res.status(500).json({
       error: "JARVIS konnte gerade keine Antwort erzeugen.",
+      details: error?.message || "Unbekannter Fehler",
     });
   }
 }
