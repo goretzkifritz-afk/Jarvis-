@@ -1,11 +1,7 @@
 import OpenAI from "openai";
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 export default async function handler(req, res) {
-  // CORS für GitHub Pages
+  // CORS
   res.setHeader(
     "Access-Control-Allow-Origin",
     "https://goretzkifritz-afk.github.io"
@@ -13,7 +9,7 @@ export default async function handler(req, res) {
 
   res.setHeader(
     "Access-Control-Allow-Methods",
-    "POST, OPTIONS"
+    "GET, POST, OPTIONS"
   );
 
   res.setHeader(
@@ -21,12 +17,23 @@ export default async function handler(req, res) {
     "Content-Type"
   );
 
-  // Browser Preflight
+  // Preflight
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
-  // Nur POST erlauben
+  // GET = einfacher Status-Test
+  if (req.method === "GET") {
+    return res.status(200).json({
+      status: "online",
+      jarvis: "JARVIS API läuft",
+      openaiKey: process.env.OPENAI_API_KEY
+        ? "vorhanden"
+        : "fehlt",
+    });
+  }
+
+  // Nur POST für Chat
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed",
@@ -34,39 +41,32 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Prüfen, ob der API-Key vorhanden ist
     if (!process.env.OPENAI_API_KEY) {
-      console.error("OPENAI_API_KEY fehlt in Vercel.");
-
       return res.status(500).json({
-        error: "OPENAI_API_KEY ist nicht gesetzt.",
-        details: "Die Environment Variable OPENAI_API_KEY wurde nicht gefunden.",
+        error: "OPENAI_API_KEY fehlt",
       });
     }
 
-    // Nachricht aus dem Request holen
     const { message } = req.body || {};
 
-    // Nachricht überprüfen
     if (!message || typeof message !== "string") {
       return res.status(400).json({
-        error: "Keine Nachricht erhalten.",
-        details: "Der Request enthält keine gültige message.",
+        error: "Keine Nachricht erhalten",
       });
     }
 
-    console.log("JARVIS Anfrage erhalten.");
+    const client = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
 
-    // OpenAI Responses API
     const response = await client.responses.create({
       model: "gpt-5",
-
       instructions: `
 Du bist JARVIS, der persönliche KI-Assistent von Fritz.
 
 Antworte immer auf Deutsch.
 
-Dein Charakter:
+Du bist:
 - ruhig
 - intelligent
 - präzise
@@ -76,16 +76,10 @@ Dein Charakter:
 - selbstbewusst, aber nicht arrogant
 
 Sprich natürlich und nicht wie ein Roboter.
-
-Nenne dich selbst JARVIS, wenn nach deiner Identität gefragt wird.
-
-Halte Antworten normalerweise übersichtlich und direkt.
-`,
-
+Halte Antworten übersichtlich und direkt.
+      `,
       input: message,
     });
-
-    console.log("JARVIS Antwort erfolgreich erzeugt.");
 
     return res.status(200).json({
       reply: response.output_text,
